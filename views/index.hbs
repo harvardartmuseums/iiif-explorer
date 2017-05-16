@@ -1,0 +1,21 @@
+<h1>{{title}}</h1>
+
+<input type="text" id="term">
+<button id="go">Go</button>
+
+<div id="results"></div>
+
+<script type="text/javascript">
+	$("#go").click(fetchTermImages);
+
+	function fetchTermImages() {
+		$.get("/data/terms/" + $("#term").val(), function (data) {
+			console.log(data);
+
+			data.forEach(function(d) {
+				$("#results").append($("<img/>").attr("src", d.iiifTextImageURL));
+			});
+		});
+	}
+
+</script>
