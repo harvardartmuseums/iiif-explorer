@@ -10,8 +10,6 @@
 
 	function fetchTermImages() {
 		$.get("/data/terms/" + $("#term").val(), function (data) {
-			console.log(data);
-
 			data.forEach(function(d) {
 				$("#results").append($("<img/>").attr("src", d.iiifTextImageURL));
 			});
