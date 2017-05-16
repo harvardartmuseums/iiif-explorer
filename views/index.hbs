@@ -8,6 +8,12 @@
 <script type="text/javascript">
 	$("#go").click(fetchTermImages);
 
+	$("#term").keypress(function(event) {
+		if ( event.which == 13 ) {
+	 		fetchTermImages();
+	 	}
+	 });
+
 	function fetchTermImages() {
 		$.get("/data/terms/" + $("#term").val(), function (data) {
 			data.forEach(function(d) {
