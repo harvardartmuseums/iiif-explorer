@@ -30,10 +30,18 @@ router.get('/terms/:term', function(req, res, next) {
 
 				if (!r.error) {
 					for (var i = 0; i < r.records.length; i++) {
-						text = r.records[i].images[0].googlevision.responses[0].textAnnotations;
-						text.forEach(function(t) {
-							if (t.description.toUpperCase() === term.toUpperCase()) {
-								output.push(t);
+						var images = r.records[i].images;
+
+						images.forEach(function(i) {
+							if (i.googlevision.responses[0]) {
+								if (i.googlevision.responses[0].textAnnotations) {
+									text = i.googlevision.responses[0].textAnnotations;
+									text.forEach(function(t) {
+										if (t.description.toUpperCase() === term.toUpperCase()) {
+											output.push(t);
+										}
+									});
+								}								
 							}
 						});
 					}
