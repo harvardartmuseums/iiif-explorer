@@ -24,9 +24,16 @@
 	function fetchTermImages(term) {
 		$.get("/data/terms/" + term, function (data) {
 			if (data.length > 0) {
-				var container = $("<div/>").attr("id", "");
+				var container;
+				var cleanTerm = term.replace(/[^0-9a-z]/gi, '');
 
-				container.append($("<h1/>").html(term));
+				// Does a container for the term already exist?
+				if ($("[data-term='" + cleanTerm + "'").length > 0) {
+					container = $("[data-term='" + cleanTerm + "'");
+				} else {
+					container = $("<div/>").attr("data-term", cleanTerm);
+					container.append($("<h1/>").html(term));
+				}
 
 				data.forEach(function(d) {
 					container.append($("<img/>")
