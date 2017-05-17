@@ -9,19 +9,22 @@
 
 
 <script type="text/javascript">
-	$("#go").click(fetchTermImages);
+	$("#go").click(processPhrase);
 
 	$("#term").keypress(function(event) {
-		if ( event.which == 13 ) {
-		
-			var searchTerm = $("#term").val();
-			var terms = searchTerm.split(" ");
-
-			for (var i = terms.length - 1; i >= 0; i--) {
-				fetchTermImages(terms[i]);
-			}	 		
+		if (event.which == 13) {
+			processPhrase()
 	 	}
 	 });
+
+	function processPhrase() {
+		var searchTerm = $("#term").val();
+		var terms = searchTerm.split(" ");
+
+		for (var i = terms.length - 1; i >= 0; i--) {
+			fetchTermImages(terms[i]);
+		}	 			
+	}
 
 	function fetchTermImages(term) {
 		$.get("/data/terms/" + term, function (data) {
