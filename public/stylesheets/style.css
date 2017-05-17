@@ -14,3 +14,12 @@ a {
 	right: 0px;
 	top: 0px;
 }
+
+.image-container {position: absolute;}
+.image-container .regions {display: none;}
+.image-container .regions img {position: absolute;z-index: 999999;}
+.image-container .regions div.info {position: absolute;display: none;}
+.image-container svg.annotations {position: absolute;z-index: 9999999;display: none;}
+.image-container .mask {position: absolute;z-index: 99999;display: none;}
+.image-container .background {z-index: -10000;display: none;}
+.image-container div.blackout {background-color: #FFFFFF;position: absolute;}

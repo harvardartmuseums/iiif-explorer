@@ -1,0 +1,85 @@
+
+<div id="compare-container-1" style="position: absolute; left: 0px;"></div>
+<div id="compare-container-2" style="position: absolute; left: 1024px;"></div>
+
+<script src="/javascripts/jquery.transit.min.js"></script>
+<script type="text/javascript">
+	var width = $(window).width();
+    var height = $(window).height();
+
+	fillContainer($("#compare-container-1"), 139678);
+	fillContainer($("#compare-container-2"), 140113);
+
+	function fillContainer(container, id) {
+		$.get("/data/object/" + id + "/experimental", function (data) {
+			var image = data.images[0];
+			var c = makeImageContainer(image, id);
+
+			$(container).append(c);
+
+			var containerID = $(container).attr("id");
+			var faces = $("#" + containerID + " .face");
+
+			for (var i = faces.length - 1; i >= 0; i--) {
+				$(faces[i]).data("currentContainer", containerID);
+				$(faces[i]).data("currentHome", $(faces[i]).data("info").home);
+			}
+
+			$(".background").show();
+       		$(".regions").show();
+       		$(".mask").show();
+		});
+	}
+
+	function scrambleFaces() {
+		var faces = $(".face");
+
+		var arr = []
+		while(arr.length < faces.length){
+		    var randomnumber = Math.floor(Math.random()*faces.length)
+		    if(arr.indexOf(randomnumber) > -1) continue;
+		    arr[arr.length] = randomnumber;
+		}
+
+		for (var i = faces.length - 1; i >= 0; i--) {
+			var moveToFace = faces[arr[i]];
+			var moveToData = $(moveToFace).data("currentHome");
+			var moveToContainer = $(moveToFace).data("currentContainer");
+
+			$(faces[i]).data("moveTo", moveToData);
+			$(faces[i]).data("moveToContainer", moveToContainer);
+		}
+
+
+		for (var i = faces.length - 1; i >= 0; i--) {
+			var moveToHome = $(faces[i]).data("moveTo");
+			var currentContainer = $(faces[i]).data("currentContainer");
+			var destinationContainer = $(faces[i]).data("moveToContainer");
+
+			if (currentContainer < destinationContainer) {
+				moveToHome.left = moveToHome.left + 1024;
+			} else if (currentContainer > destinationContainer) {
+				moveToHome.left = moveToHome.left - 1024;
+			}
+
+			$(faces[i])
+				.transition({y:900})
+				.transition({
+					x: moveToHome.left,
+					y: moveToHome.top,
+					delay: 1000
+				});
+
+			$(faces[i]).data("currentContainer", destinationContainer);
+			$(faces[i]).data("currentHome", moveToHome);
+		}
+	}
+
+	$("#scramble-it").click(scrambleFaces);
+
+	$("body").keypress(function(event) {
+		if (event.which == 13) {
+			scrambleFaces()
+	 	}
+	 });
+</script>

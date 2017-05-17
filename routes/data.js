@@ -3,8 +3,47 @@ var express = require('express');
 var router = express.Router();
 
 var apikey = process.env.APIKEY;
-var apiURL = "http://api.harvardartmuseums.org/experimental/object";
+var apiURL = "http://api.harvardartmuseums.org";
 
+router.get('/object/:objectid', function(req, res, next) {
+	var url = apiURL;
+	var objectid = req.params.objectid;
+
+	url += "/object/" + objectid;
+
+	request(url, {
+			qs: {
+				apikey: apikey
+			}
+		}, function(error, response, body) {
+			var r = JSON.parse(body);
+
+			res.send(r);
+		});
+
+});
+
+router.get('/object/:objectid/:section', function(req, res, next) {
+	var url = apiURL;
+	var section = req.params.section;
+	var objectid = req.params.objectid;
+
+	if (section === "experimental") {
+		url += "/experimental/object/" + objectid;
+	} else if (section === "images") {
+		url += "/object/" + objectid + "/images";
+	}
+
+	request(url, {
+			qs: {
+				apikey: apikey
+			}
+		}, function(error, response, body) {
+			var r = JSON.parse(body);
+
+			res.send(r);
+		});
+});
 
 router.get('/terms/sample', function(req, res, next) {
 	res.sent("sample set");
@@ -12,11 +51,12 @@ router.get('/terms/sample', function(req, res, next) {
 
 /* GET users listing. */
 router.get('/terms/:term', function(req, res, next) {
-
+	var url = apiURL + "/experimental/object";
 	var term = req.params.term;
+
 	if (term) {
 
-		request(apiURL, {
+		request(url, {
 				qs: {
 					apikey: apikey, 
 					q: 'images.googlevision.responses.textAnnotations.description:' + term,
