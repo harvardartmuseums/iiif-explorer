@@ -1,0 +1,52 @@
+<h1>{{title}}</h1>
+
+<div id="sticker-panel">
+	<input type="text" id="term">
+	<button id="go">Go</button>
+	<div id="results"></div>
+</div>
+<div id="message-panel"></div>
+
+
+<script type="text/javascript">
+	$("#go").click(fetchTermImages);
+
+	$("#term").keypress(function(event) {
+		if ( event.which == 13 ) {
+		
+			var searchTerm = $("#term").val();
+			var terms = searchTerm.split(" ");
+
+			for (var i = terms.length - 1; i >= 0; i--) {
+				fetchTermImages(terms[i]);
+			}	 		
+	 	}
+	 });
+
+	function fetchTermImages(term) {
+		$.get("/data/terms/" + term, function (data) {
+			if (data.length > 0) {
+				var container;
+				var cleanTerm = term.replace(/[^0-9a-z]/gi, '');
+
+				// Does a container for the term already exist?
+				if ($("[data-term='" + cleanTerm + "'").length > 0) {
+					container = $("[data-term='" + cleanTerm + "'");
+				} else {
+					container = $("<div/>").attr("data-term", cleanTerm);
+					container.append($("<h1/>").html(term));
+				}
+
+				data.forEach(function(d) {
+					container.append($("<img/>")
+						.attr("src", d.iiifTextImageURL)
+						.attr("class", "draggable"));
+				});
+
+				$("#results").prepend(container);
+			}
+			interact('.draggable').draggable({onmove: dragMoveListener});
+		});
+	}
+
+</script>
