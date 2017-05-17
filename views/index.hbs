@@ -11,18 +11,22 @@
 
 	$("#term").keypress(function(event) {
 		if ( event.which == 13 ) {
-	 		fetchTermImages();
+		
+			var searchTerm = $("#term").val();
+			var terms = searchTerm.split(" ");
+
+			for (var i = terms.length - 1; i >= 0; i--) {
+				fetchTermImages(terms[i]);
+			}	 		
 	 	}
 	 });
 
-	function fetchTermImages() {
-		var searchTerm = $("#term").val();
-
-		$.get("/data/terms/" + searchTerm, function (data) {
+	function fetchTermImages(term) {
+		$.get("/data/terms/" + term, function (data) {
 			if (data.length > 0) {
 				var container = $("<div/>").attr("id", "");
 
-				container.append($("<h1/>").html(searchTerm));
+				container.append($("<h1/>").html(term));
 
 				data.forEach(function(d) {
 					container.append($("<img/>")

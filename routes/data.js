@@ -22,7 +22,7 @@ router.get('/terms/:term', function(req, res, next) {
 					q: 'images.googlevision.responses.textAnnotations.description:' + term,
 					fields: 'images.googlevision.responses.textAnnotations',
 					sort: 'random',
-					size: 100
+					size: 25
 				}
 			}, function(error, response, body) {
 				var r = JSON.parse(body);
