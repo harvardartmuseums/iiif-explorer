@@ -15,10 +15,20 @@
 	 });
 
 	function fetchTermImages() {
-		$.get("/data/terms/" + $("#term").val(), function (data) {
-			data.forEach(function(d) {
-				$("#results").append($("<img/>").attr("src", d.iiifTextImageURL));
-			});
+		var searchTerm = $("#term").val();
+
+		$.get("/data/terms/" + searchTerm, function (data) {
+			if (data.length > 0) {
+				var container = $("<div/>").attr("id", "");
+
+				container.append($("<h1/>").html(searchTerm));
+
+				data.forEach(function(d) {
+					container.append($("<img/>").attr("src", d.iiifTextImageURL));
+				});
+
+				$("#results").append(container);
+			}
 		});
 	}
 
