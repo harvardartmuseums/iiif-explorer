@@ -1,9 +1,10 @@
 <h1>{{title}}</h1>
 
-<input type="text" id="term">
-<button id="go">Go</button>
-
-<div id="results"></div>
+<div id="sticker-panel">
+	<input type="text" id="term">
+	<button id="go">Go</button>
+	<div id="results"></div>
+</div>
 
 <script type="text/javascript">
 	$("#go").click(fetchTermImages);
@@ -29,7 +30,7 @@
 						.attr("class", "draggable"));
 				});
 
-				$("#results").append(container);
+				$("#results").prepend(container);
 			}
 			interact('.draggable').draggable({onmove: dragMoveListener});
 		});

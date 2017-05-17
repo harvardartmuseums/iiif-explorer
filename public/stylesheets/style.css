@@ -6,3 +6,11 @@ body {
 a {
   color: #00B7FF;
 }
+
+#sticker-panel {
+	position: relative;
+	float: left;
+	width: 30%;
+	right: 0px;
+	top: 0px;
+}
