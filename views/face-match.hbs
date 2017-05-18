@@ -1,0 +1,25 @@
+<div class="jumbotron">
+	<h1 class="display-4">{{title}}</h1>
+</div>
+
+<div>
+	<div id="compare-container-1" style="position: absolute; left: 0px;"></div>
+</div>
+
+<script type="text/javascript">
+	
+	fillContainer($("#compare-container-1"), 140112);
+
+	function fillContainer(container, id) {
+		$.get("/data/object/" + id + "/experimental", function (data) {
+			var image = data.images[0];
+			var c = makeImageContainer(image, id);
+			$(container).append(c);
+			$(".background").show();
+       		$(".regions").show();
+       		$(".mask").show();
+			interact('.draggable').draggable({onmove: dragMoveListener});
+       	});
+     }
+
+</script>
