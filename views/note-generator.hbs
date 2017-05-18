@@ -1,6 +1,6 @@
 <div class="jumbotron">
-	<h1 class="display-3">{{title}}</h1>
-	<hr class="my-4">
+	<h1 class="display-4">{{title}}</h1>
+	<br/>
 	<div class="form-group">
 		<input type="text" id="term" class="form-control input-lg " placeholder="Enter your message and watch the magic happen">
 	</div>
@@ -96,15 +96,29 @@
 		var x = pos.left - (data.boundingPoly.vertices[0].x*data.scalefactor);
 		var y = pos.top - (data.boundingPoly.vertices[0].y*data.scalefactor);
 
-		var fullImage = $("<img/>", {"src": imageURL})
+		var container = $("<div/>")
 							.css({
 								"position": "absolute",
 								"top": y + "px",
 								"left": x + "px"})
+							.attr("class", "draggable")
 							.dblclick(function() {$(this).remove();});
 
-		$("body").append(fullImage);
+		// Add the image
+		var fullImage = $("<img/>", {"src": imageURL})
+		$(container).append(fullImage);
 
+		// Add the info panel
+		var objectInfo = $("<div/>")
+							.attr("class", "info-panel");
+		$(container).append(objectInfo);
+
+		interact('.draggable').draggable({onmove: dragMoveListener});
+		
+		$("body").append(container);
 	}
 
+	function buildInfoPanel(panel) {
+		
+	}
 </script>

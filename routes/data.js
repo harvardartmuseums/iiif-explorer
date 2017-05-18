@@ -5,6 +5,10 @@ var router = express.Router();
 var apikey = process.env.APIKEY;
 var apiURL = "http://api.harvardartmuseums.org";
 
+var wordList = ["attend", "nuptials", "park", "today", "reception", "satan's", "submarines", "florida", "battle", "border", 
+				"sun", "safety", "strange", "land", "vodka", "orange", "leaves", "breathless", "run", "good", "drive",
+				"food", "welcome", "to", "the", "and", "composition", "cheese", "live", "in", "cottage", "people"];
+
 router.get('/object/:objectid', function(req, res, next) {
 	var url = apiURL;
 	var objectid = req.params.objectid;
@@ -60,7 +64,7 @@ router.get('/terms/:term', function(req, res, next) {
 				qs: {
 					apikey: apikey, 
 					q: 'images.googlevision.responses.textAnnotations.description:' + term,
-					fields: 'images.googlevision.responses.textAnnotations,images.iiifbaseuri,images.scalefactor',
+					fields: 'id,images.googlevision.responses.textAnnotations,images.iiifbaseuri,images.scalefactor',
 					sort: 'random',
 					size: 25
 				}
@@ -78,6 +82,7 @@ router.get('/terms/:term', function(req, res, next) {
 									text = i.googlevision.responses[0].textAnnotations;
 									text.forEach(function(t) {
 										if (t.description.toUpperCase() === term.toUpperCase()) {
+											t.objectid = t.id;
 											t.iiifbaseuri = i.iiifbaseuri;
 											t.scalefactor = i.scalefactor;
 											output.push(t);
