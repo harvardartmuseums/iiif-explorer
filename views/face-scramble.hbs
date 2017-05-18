@@ -1,14 +1,28 @@
+<div class="jumbotron">
+	<h1 class="display-4">{{title}}</h1>
+</div>
 
-<div id="compare-container-1" style="position: absolute; left: 0px;"></div>
-<div id="compare-container-2" style="position: absolute; left: 1024px;"></div>
+<div class="">
+	<div id="compare-container-1" style="position: absolute; left: 0px;"></div>
+	<div id="compare-container-2" style="position: absolute; left: 1024px;"></div>
+</div>
 
 <script src="/javascripts/jquery.transit.min.js"></script>
 <script type="text/javascript">
+	var faceSets = [[140130, 140112], 
+					[140901, 140888],
+					[159015, 139678]];
+
 	var width = $(window).width();
     var height = $(window).height();
 
-	fillContainer($("#compare-container-1"), 140130);
-	fillContainer($("#compare-container-2"), 140112);
+    generateRandomPair();
+
+    function generateRandomPair() {
+    	var pair = faceSets[Math.floor(Math.random()*faceSets.length)];
+		fillContainer($("#compare-container-1"), pair[0]);
+		fillContainer($("#compare-container-2"), pair[1]);
+    }
 
 	function fillContainer(container, id) {
 		$.get("/data/object/" + id + "/experimental", function (data) {
@@ -63,7 +77,7 @@
 			}
 
 			$(faces[i])
-				.transition({y:900})
+				.transition({y:-165})
 				.transition({
 					x: moveToHome.left,
 					y: moveToHome.top,
