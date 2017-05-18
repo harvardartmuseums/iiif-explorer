@@ -1,5 +1,5 @@
 body {
-  padding: 50px;
+  /*padding: 50px;*/
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
 
@@ -8,12 +8,15 @@ a {
 }
 
 #sticker-panel {
-	position: relative;
+/*	position: relative;
 	float: left;
 	width: 30%;
 	right: 0px;
-	top: 0px;
+	top: 0px;*/
+	display: none;
 }
+.message-word {padding: 2px;}
+
 
 .image-container {position: absolute;}
 .image-container .regions {display: none;}

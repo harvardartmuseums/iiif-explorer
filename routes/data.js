@@ -60,7 +60,7 @@ router.get('/terms/:term', function(req, res, next) {
 				qs: {
 					apikey: apikey, 
 					q: 'images.googlevision.responses.textAnnotations.description:' + term,
-					fields: 'images.googlevision.responses.textAnnotations',
+					fields: 'images.googlevision.responses.textAnnotations,images.iiifbaseuri,images.scalefactor',
 					sort: 'random',
 					size: 25
 				}
@@ -78,6 +78,8 @@ router.get('/terms/:term', function(req, res, next) {
 									text = i.googlevision.responses[0].textAnnotations;
 									text.forEach(function(t) {
 										if (t.description.toUpperCase() === term.toUpperCase()) {
+											t.iiifbaseuri = i.iiifbaseuri;
+											t.scalefactor = i.scalefactor;
 											output.push(t);
 										}
 									});
