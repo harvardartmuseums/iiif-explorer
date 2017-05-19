@@ -57,6 +57,7 @@ router.get('/terms/sample', function(req, res, next) {
 router.get('/terms/:term', function(req, res, next) {
 	var url = apiURL + "/experimental/object";
 	var term = req.params.term;
+	var size = req.query.size || 25;
 
 	if (term) {
 
@@ -66,7 +67,7 @@ router.get('/terms/:term', function(req, res, next) {
 					q: 'images.googlevision.responses.textAnnotations.description:' + term,
 					fields: 'id,images.googlevision.responses.textAnnotations,images.iiifbaseuri,images.scalefactor',
 					sort: 'random',
-					size: 25
+					size: size
 				}
 			}, function(error, response, body) {
 				var r = JSON.parse(body);

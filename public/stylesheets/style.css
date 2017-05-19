@@ -17,6 +17,8 @@ a {
 }
 .message-word {padding: 2px;}
 
+.magnetic-word {padding:2px;}
+.magnetic-refrigerator {z-index: -999999;}
 
 .image-container {position: absolute;}
 .image-container .regions {display: none;}
