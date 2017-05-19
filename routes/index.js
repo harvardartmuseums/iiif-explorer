@@ -6,8 +6,8 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'IIIF Explorer' });
 });
 
-router.get('/note-generator', function(req, res, next) {
-  res.render('note-generator', { title: 'Magic Message Generator' });
+router.get('/magic-message', function(req, res, next) {
+  res.render('magic-message', { title: 'Magic Message Generator' });
 });
 
 router.get('/magnetic-poetry', function(req, res, next) {
