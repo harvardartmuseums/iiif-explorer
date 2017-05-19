@@ -15,7 +15,7 @@ router.get('/magnetic-poetry', function(req, res, next) {
 });
 
 router.get('/face/match', function(req, res, next) {
-  res.render('face-match', { title: 'Face Match' }
+  res.render('face-match', { title: 'Face Match' });
 });
 
 router.get('/face/scramble', function(req, res, next) {
