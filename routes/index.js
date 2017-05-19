@@ -10,6 +10,10 @@ router.get('/note-generator', function(req, res, next) {
   res.render('note-generator', { title: 'Magic Message Generator' });
 });
 
+router.get('/magnetic-poetry', function(req, res, next) {
+  res.render('magnetic-poetry', { title: 'Magnetic Poetry' });
+});
+
 router.get('/face/scramble', function(req, res, next) {
   res.render('face-scramble', { title: 'Face Scramble' });
 });

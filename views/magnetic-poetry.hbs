@@ -1,0 +1,60 @@
+<div class="jumbotron">
+	<h1 class="display-3">{{title}}</h1>
+</div>
+
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-4" id="word-list"></div>
+		<div class="col-md-8 magnetic-refrigerator" id="refrigerator"></div>
+	</div>
+</div>
+
+
+<script type="text/javascript">
+	var wordList = ["orange", "red", "blue", "paradise", "florida", "submarines", "food", "good", "the", "the", "as", "is", "is", "of", "of", "and", "and", "are", "safety", "10", "20", "30", "40", "50", "protein", "vote", "election", "the", "norad", "fruit", "studio", "shoulder", "deep", "daisies", "drive", "cars", "whiskey", "vodka", "some", "leader", "new", "there", "an", "cats", "see", "south", "cattle"  ];
+
+	function buildWordList() {
+		var wordContainer = $("#word-list");
+
+		for (var i = wordList.length - 1; i >= 0; i--) {
+			$.get("/data/terms/" + wordList[i] + "?size=1", function(data) {
+				if (data.length > 0) {
+					var word = $("<img/>", {
+									src: data[0].iiifTextImageURL,
+									class: "draggable magnetic-word"
+									})
+								.attr("alt", data[0].description)
+								.data("info", data[0])
+								.dblclick(showFullImage);
+
+					$(wordContainer).append(word);
+				}
+			});			
+		}
+
+		interact('.draggable').draggable({onmove: dragMoveListener});
+	}
+
+	function showFullImage() {
+		var pos = $(this).offset();
+		var data = $(this).data("info");
+		var imageURL = data.iiifbaseuri + "/full/full/0/native.jpg";
+
+		var x = pos.left - (data.boundingPoly.vertices[0].x*data.scalefactor);
+		var y = pos.top - (data.boundingPoly.vertices[0].y*data.scalefactor);
+
+		var fullImage = $("<img/>", {"src": imageURL})
+							.css({
+								"position": "absolute",
+								"top": y + "px",
+								"left": x + "px"})
+							.dblclick(function() {$(this).remove();});
+
+		$("body").append(fullImage);
+
+	}
+
+	$(function() {
+		buildWordList()
+	});
+</script>
