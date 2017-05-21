@@ -67,7 +67,21 @@
 		interact('.draggable').draggable({onmove: dragMoveListener});
 	}
 
+	function clearTheRefrigerator() {
+		var list = $("img").filter(function() {return $(this).attr("data-x") != 0;});
+		
+		$(list).attr("data-x", 0)
+				.attr("data-y", 0)
+				.transition({x: 0, y:0});
+	}
+
 	$(function() {
 		buildWordList()
+		
+		$(document).keypress(function(event) {
+			if (event.which == 114) {
+				clearTheRefrigerator();
+		 	}
+		});		
 	});
 </script>
