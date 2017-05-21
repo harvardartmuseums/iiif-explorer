@@ -59,7 +59,7 @@
 								"position": "absolute",
 								"top": y + "px",
 								"left": x + "px"})
-							.attr("class", "draggable")
+							.attr("class", "draggable full-image")
 							.dblclick(function() {$(this).remove();});
 
 		$("body").append(fullImage);
@@ -73,6 +73,8 @@
 		$(list).attr("data-x", 0)
 				.attr("data-y", 0)
 				.transition({x: 0, y:0});
+
+		$(".full-image").remove();
 	}
 
 	$(function() {
