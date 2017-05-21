@@ -35,6 +35,8 @@ a {
 .magnetic-word {padding:2px;}
 .magnetic-refrigerator {z-index: -999999;}
 
+.magic-input-xlg .form-control {font-size: 1.5rem;}
+
 .image-container {position: absolute;}
 .image-container .regions {display: none;}
 .image-container .regions img {position: absolute;z-index: 999999;}

@@ -1,14 +1,15 @@
 <div class="jumbotron-short">
 	<h1 class="display-3">{{title}}</h1>
-	<br/>
-	<div class="form-group">
-		<input type="text" id="term" class="form-control input-lg " placeholder="Type in your message and watch the magic happen">
-	</div>
-	<button id="go" class="btn btn-primary btn-md">Make It So</button>	
-	<button id="reset" class="btn btn-primary btn-md">Clear It</button>	
+	<p class="lead">Type a message in the box and watch the magic happen</p>
 </div>
 
 <div class="container">
+	<div class="input-group magic-input-xlg">
+		<input type="text" id="term" class="form-control" placeholder="">
+		<span class="input-group-btn">
+    		<button id="reset" class="btn btn-secondary" type="button">Start Over</button>
+      	</span>
+	</div>
 	<div id="message-panel"></div>
 
 	<div id="sticker-panel">	
@@ -19,15 +20,6 @@
 
 <script type="text/javascript">
 	var messages = [];
-
-	$("#go").click(processPhrase);
-	$("#reset").click(clearMessages);
-
-	$("#term").keypress(function(event) {
-		if (event.which == 13) {
-			processPhrase()
-	 	}
-	 });
 
 	function clearMessages() {
 		messages = [];
@@ -73,8 +65,7 @@
 
 				data.forEach(function(d) {
 					container.append($("<img/>")
-						.attr("src", d.iiifTextImageURL)
-						.attr("class", "draggable"));
+						.attr("src", d.iiifTextImageURL));
 				});
 
 				var randomImage =  data[Math.floor(Math.random()*data.length)];
@@ -84,7 +75,6 @@
 
 				$("#results").prepend(container);
 			}
-			interact('.draggable').draggable({onmove: dragMoveListener});
 		});
 	}
 
@@ -121,4 +111,24 @@
 	function buildInfoPanel(panel) {
 		
 	}
+
+	$(function() {
+
+		$("#go").click(processPhrase);
+		$("#reset").click(clearMessages);
+
+		$("#term").keypress(function(event) {
+			if (event.which == 13 || event.which == 32) {
+				processPhrase()
+		 	} else if (event.which == 48) {
+		 		clearMessages();
+		 	}
+		 });	
+
+		$("#term").keyup(function(event) {
+			if ($("#term").val() === "") {
+				clearMessages();
+			}
+		});
+	});	
 </script>
