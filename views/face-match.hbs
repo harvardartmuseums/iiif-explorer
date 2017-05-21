@@ -5,12 +5,11 @@
 
 <div>
 	<div id="compare-container-1" style="position: absolute; left: 0px;"></div>
+	<div id="face-container" style="float:right;width:40%;"></div>
 </div>
 
 <script type="text/javascript">
 	
-	fillContainer($("#compare-container-1"), 140112);
-
 	function fillContainer(container, id) {
 		$.get("/data/object/" + id + "/experimental", function (data) {
 			var image = data.images[0];
@@ -19,8 +18,35 @@
 			$(".background").show();
        		$(".regions").show();
        		$(".mask").show();
-			interact('.draggable').draggable({onmove: dragMoveListener});
-       	});
-     }
 
+			interact('.draggable').draggable({onmove: dragMoveListener});
+
+			arrangeFaces();	
+       	});
+    }
+
+    function arrangeFaces() {
+    	var faces = $(".face");
+    	var maxX = 1600;
+    	var minX = 1150;
+    	var maxY = 700;
+    	var minY = 0;
+
+		for (var i = faces.length - 1; i >= 0; i--) {
+			var xPos = Math.floor(Math.random()*(maxX-minX+1)+minX);
+			var yPos = Math.floor(Math.random()*(maxY-minY+1)+minY);
+
+			$(faces[i]).transition({
+							x: xPos,
+							y: yPos,
+							delay: 1000
+						})
+						.attr("data-x", xPos)
+						.attr("data-y", yPos);
+    	};
+    }
+
+	$(function() {
+		fillContainer($("#compare-container-1"), 140112);
+	});
 </script>
