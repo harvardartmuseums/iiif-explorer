@@ -1,6 +1,6 @@
 <div class="jumbotron-short">
 	<h1 class="display-3">{{title}}</h1>
-	<p class="lead">Scramble the faces.</p>
+	<p class="lead">Press "s" to automatically scramble the faces. Refresh the page to see a different pair of images.</p>
 </div>
 
 <div class="">
@@ -92,7 +92,7 @@
 	$("#scramble-it").click(scrambleFaces);
 
 	$("body").keypress(function(event) {
-		if (event.which == 13) {
+		if (event.which == 115) {
 			scrambleFaces()
 	 	}
 	 });
