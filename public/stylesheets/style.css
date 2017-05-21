@@ -1,7 +1,15 @@
 body {
-  /*padding: 50px;*/
-  font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
+   font: 14px  "Neutral Regular 3", "Lucida Grande", Helvetica, Arial, sans-serif;
 }
+
+h1, h2, h3, h4, h5, h6 {
+    font-family: "Neutral Regular 3";
+}
+
+p, div {
+    font-family: "Neutral Regular 3";
+}
+
 
 a {
   color: #00B7FF;
