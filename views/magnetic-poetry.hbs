@@ -59,10 +59,12 @@
 								"position": "absolute",
 								"top": y + "px",
 								"left": x + "px"})
+							.attr("class", "draggable")
 							.dblclick(function() {$(this).remove();});
 
 		$("body").append(fullImage);
 
+		interact('.draggable').draggable({onmove: dragMoveListener});
 	}
 
 	$(function() {
