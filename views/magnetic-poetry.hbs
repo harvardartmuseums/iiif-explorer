@@ -68,7 +68,7 @@
 	}
 
 	function clearTheRefrigerator() {
-		var list = $("img").filter(function() {return $(this).attr("data-x") != 0;});
+		var list = $("img").filter(function() {return $(this).attr("data-x") && $(this).attr("data-x") != 0;});
 		
 		$(list).attr("data-x", 0)
 				.attr("data-y", 0)
