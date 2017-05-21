@@ -46,7 +46,17 @@
     	};
     }
 
+    function startOver() {
+    	arrangeFaces();
+    }
+
 	$(function() {
 		fillContainer($("#compare-container-1"), 140112);
+
+		$(document).keypress(function(event) {
+			if (event.which == 114) {
+				startOver();
+		 	}
+		});			
 	});
 </script>
