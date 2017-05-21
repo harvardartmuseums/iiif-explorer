@@ -7,7 +7,7 @@ router.get('/', function(req, res, next) {
 });
 
 router.get('/magic-message', function(req, res, next) {
-  res.render('magic-message', { title: 'Magic Message Generator' });
+  res.render('magic-message', { title: 'Magic Message' });
 });
 
 router.get('/magnetic-poetry', function(req, res, next) {
