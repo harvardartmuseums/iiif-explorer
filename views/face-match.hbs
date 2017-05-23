@@ -1,6 +1,6 @@
 <div class="jumbotron-short">
 	<h1 class="display-3">{{title}}</h1>
-	<p class="lead">Drag the faces and match them to the correct body. Good luck.</p>
+	<p class="lead">Drag the faces and match them to the correct body. Good luck. Press "s" to start over.</p>
 </div>
 
 <div>
@@ -9,7 +9,8 @@
 </div>
 
 <script type="text/javascript">
-	
+	var objects = [140130, 140112, 140111, 141101, 136484];
+
 	function fillContainer(container, id) {
 		$.get("/data/object/" + id + "/experimental", function (data) {
 			var image = data.images[0];
@@ -17,6 +18,7 @@
 			$(container).append(c);
 			$(".background").show();
        		$(".regions").show();
+       		$(".text").hide();
        		$(".mask").show();
 
 			interact('.draggable').draggable({onmove: dragMoveListener});
@@ -51,10 +53,12 @@
     }
 
 	$(function() {
-		fillContainer($("#compare-container-1"), 140112);
+    	var randomObject = objects[Math.floor(Math.random()*objects.length)];
+    	
+		fillContainer($("#compare-container-1"), randomObject);
 
 		$(document).keypress(function(event) {
-			if (event.which == 114) {
+			if (event.which == 115) {
 				startOver();
 		 	}
 		});			
