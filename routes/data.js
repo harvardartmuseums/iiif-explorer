@@ -76,14 +76,15 @@ router.get('/terms/:term', function(req, res, next) {
 				if (!r.error) {
 					for (var i = 0; i < r.records.length; i++) {
 						var images = r.records[i].images;
-
+						var objectID = r.records[i].id;
+						
 						images.forEach(function(i) {
 							if (i.googlevision.responses[0]) {
 								if (i.googlevision.responses[0].textAnnotations) {
 									text = i.googlevision.responses[0].textAnnotations;
 									text.forEach(function(t) {
 										if (t.description.toUpperCase() === term.toUpperCase()) {
-											t.objectid = t.id;
+											t.objectid = objectID;
 											t.iiifbaseuri = i.iiifbaseuri;
 											t.scalefactor = i.scalefactor;
 											output.push(t);
