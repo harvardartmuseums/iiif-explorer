@@ -183,7 +183,7 @@ function makeImageContainer(image, id) {
 
             // Draw the black out boxes on the mask layer
             var box = $("<div/>", {
-                "class": "blackout",
+                "class": "blackout text",
                 "width": width,
                 "height": height})
               .css({"transform" : "translate(" + left + "px," + top + "px)"});
