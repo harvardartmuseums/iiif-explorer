@@ -24,7 +24,7 @@
 	function clearMessages() {
 		messages = [];
 		$("#message-panel").empty();
-		$("#term").val("");
+		$("#term").val("").focus();
 	}
 
 	function processPhrase() {
@@ -123,7 +123,6 @@
 	}
 
 	$(function() {
-
 		$("#go").click(processPhrase);
 		$("#reset").click(clearMessages);
 
@@ -140,5 +139,7 @@
 				clearMessages();
 			}
 		});
+
+		$("#term").focus();
 	});	
 </script>
