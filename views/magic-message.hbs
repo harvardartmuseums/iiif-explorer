@@ -88,6 +88,7 @@
 
 		var container = $("<div/>")
 							.css({
+								"z-index": 100000,
 								"position": "absolute",
 								"top": y + "px",
 								"left": x + "px"})
@@ -98,18 +99,26 @@
 		var fullImage = $("<img/>", {"src": imageURL})
 		$(container).append(fullImage);
 
-		// Add the info panel
-		var objectInfo = $("<div/>")
-							.attr("class", "info-panel");
-		$(container).append(objectInfo);
-
-		interact('.draggable').draggable({onmove: dragMoveListener});
+		// Add the info panel		
+		var infoPanel = $("<div/>")
+					.attr("class", "info-panel");
 		
-		$("body").append(container);
-	}
+		$.get("/data/object/" + data.objectid, function(data) {
+			var description = "It's a " + data.worktypes[0].worktype + " titled " + data.title + ".<br/>";
+			var link = $("<a/>")
+							.attr("href", data.url)
+							.attr("target", "_blank")
+							.html("Read more about it.");
+			
+			$(infoPanel).append(description)
+						.append(link);
+			
+			$(container).append(infoPanel);
 
-	function buildInfoPanel(panel) {
-		
+			interact('.draggable').draggable({onmove: dragMoveListener});
+			
+			$("body").append(container);
+		});
 	}
 
 	$(function() {
