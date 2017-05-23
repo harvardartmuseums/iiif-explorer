@@ -22,6 +22,8 @@
 	var messages = [];
 
 	function clearMessages() {
+		$(".full-image").remove();
+
 		messages = [];
 		$("#message-panel").empty();
 		$("#term").val("").focus();
@@ -93,7 +95,7 @@
 								"position": "absolute",
 								"top": y + "px",
 								"left": x + "px"})
-							.attr("class", "draggable")
+							.attr("class", "draggable full-image")
 							.dblclick(function() {$(this).remove();});
 
 		// Add the image
