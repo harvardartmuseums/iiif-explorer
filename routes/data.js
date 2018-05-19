@@ -108,4 +108,41 @@ router.get('/terms/:term', function(req, res, next) {
 
 });
 
+
+router.get('/manifests/list/:thing', function(req, res, next) {
+	var manifestList = [];
+	var url = apiURL;
+	var qs = {};
+	var thing = req.params.thing || "object";
+	var iiifManifestBaseURL = "https://iiif.harvardartmuseums.org/manifests"; 
+
+	if (thing === "object") {
+		url += "/object";
+		qs = {apikey: apikey, sort: 'random', fields: 'id', gallery: 'any', hasimage: 1, size: 50};
+	} else {
+		url += "/gallery";
+		qs = {apikey: apikey, sort: 'id', fields: 'id', floor: '1|2|3', size:100};
+	}
+
+	// Generate a list of manifests
+ 	request(url, {qs: qs}, function(error, response, body) {
+  		var r = JSON.parse(body);
+  	
+		if (!r.error) {
+	  		for (var i = 0; i < r.records.length; i++) {
+	  	    	var manifest = {
+	          		"manifestUri": iiifManifestBaseURL + "/" + thing + "/" + r.records[i].id,
+	          		"location": "Harvard Art Museums"
+	        	};
+	       		manifestList.push(manifest);
+	  	  	}
+
+	      	res.send(manifestList);
+
+		} else {
+	  		res.send("");
+	  	}
+	});
+});
+
 module.exports = router;

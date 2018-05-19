@@ -22,5 +22,9 @@ router.get('/face/scramble', function(req, res, next) {
   res.render('face-scramble', { title: 'Face Scramble' });
 });
 
+router.get('/mirador', function(req, res, next) {
+  res.render('mirador', {layout: 'layout-mirador.hbs', title: 'Mirador' });
+});
+
 
 module.exports = router;

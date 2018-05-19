@@ -1,0 +1,30 @@
+<div id="viewer"></div>
+<script type="text/javascript">
+  var mirador;
+  var manifestList = [];
+
+  $(function() {
+      $.get("/data/manifests/list/object", function(data) {
+        var objects = data;
+        $.get("/data/manifests/list/gallery", function(data) {
+          manifestList = objects.concat(data);
+
+          startMirador();
+        });
+      });
+
+      function startMirador() {
+        mirador = Mirador({
+          "id": "viewer",
+          "layout": "1x1",
+          "buildPath": "/mirador/",
+          "data": manifestList,
+          "windowObjects": [],
+          "openManifestsPage": true,
+          "mainMenuSettings": {
+              "userButtons": []
+          }
+        });
+      };
+  });
+</script>
