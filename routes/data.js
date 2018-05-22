@@ -5,10 +5,6 @@ var router = express.Router();
 var apikey = process.env.APIKEY;
 var apiURL = "http://api.harvardartmuseums.org";
 
-var wordList = ["attend", "nuptials", "park", "today", "reception", "satan's", "submarines", "florida", "battle", "border", 
-				"sun", "safety", "strange", "land", "vodka", "orange", "leaves", "breathless", "run", "good", "drive",
-				"food", "welcome", "to", "the", "and", "composition", "cheese", "live", "in", "cottage", "people"];
-
 router.get('/object/:objectid', function(req, res, next) {
 	var url = apiURL;
 	var objectid = req.params.objectid;
@@ -49,11 +45,7 @@ router.get('/object/:objectid/:section', function(req, res, next) {
 		});
 });
 
-router.get('/terms/sample', function(req, res, next) {
-	res.sent("sample set");
-});
-
-/* GET users listing. */
+/* GET term. */
 router.get('/terms/:term', function(req, res, next) {
 	var url = apiURL + "/experimental/object";
 	var term = req.params.term;
