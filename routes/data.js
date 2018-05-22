@@ -5,24 +5,6 @@ var router = express.Router();
 var apikey = process.env.APIKEY;
 var apiURL = "http://api.harvardartmuseums.org";
 
-router.get('/object/:objectid', function(req, res, next) {
-	var url = apiURL;
-	var objectid = req.params.objectid;
-
-	url += "/object/" + objectid;
-
-	request(url, {
-			qs: {
-				apikey: apikey
-			}
-		}, function(error, response, body) {
-			var r = JSON.parse(body);
-
-			res.send(r);
-		});
-
-});
-
 router.get('/object/:objectid/:section', function(req, res, next) {
 	var url = apiURL;
 	var section = req.params.section;
@@ -135,6 +117,53 @@ router.get('/manifests/list/:thing', function(req, res, next) {
 	  		res.send("");
 	  	}
 	});
+});
+
+
+router.get('/:endpoint', function(req, res, next) {
+	var url = apiURL;
+	var endpoint = req.params.endpoint;
+    var qs = {
+        apikey: apikey
+    };
+
+    for (var param in req.query) {
+        qs[param] = req.query[param];
+    }
+
+    url += "/" + endpoint;
+
+    request(url, {
+			qs: qs
+		}, function(error, response, body) {
+			var r = JSON.parse(body);
+
+			//cleanup the results before passing them out
+			delete(r.info.next);
+			delete(r.info.previous);
+			
+			res.send(r);
+		});
+
+});
+
+router.get('/:endpoint/:itemid', function(req, res, next) {
+	var url = apiURL;
+    var itemid = req.params.itemid;
+    var endpoint = req.params.endpoint;
+
+	url += "/" + endpoint + "/" + itemid;
+
+	request(url, {
+			qs: {
+				apikey: apikey
+			}
+		}, function(error, response, body) {
+			var r = JSON.parse(body);
+
+			res.send(r);
+		});
+
 });
 
 module.exports = router;
