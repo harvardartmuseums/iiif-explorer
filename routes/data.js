@@ -27,9 +27,31 @@ router.get('/object/:objectid/:section', function(req, res, next) {
 		});
 });
 
+router.get('/image/:imageid/:section', function(req, res, next) {
+	var url = apiURL;
+	var section = req.params.section;
+	var imageid = req.params.imageid;
+
+	if (section === "objects") {
+		url += "/object";
+	}
+
+	request(url, {
+			qs: {
+				apikey: apikey,
+				q: 'images.imageid:' + imageid
+			}
+		}, function(error, response, body) {
+			var r = JSON.parse(body);
+
+			res.send(r["records"]);
+		});
+});
+
 /* GET term. */
 router.get('/terms/:term', function(req, res, next) {
-	var url = apiURL + "/experimental/object";
+	const endpoint = "/annotation";
+	var url = apiURL + endpoint;
 	var term = req.params.term;
 	var size = req.query.size || 25;
 
@@ -38,8 +60,8 @@ router.get('/terms/:term', function(req, res, next) {
 		request(url, {
 				qs: {
 					apikey: apikey, 
-					q: 'images.googlevision.responses.textAnnotations.description:' + term,
-					fields: 'id,images.googlevision.responses.textAnnotations,images.iiifbaseuri,images.scalefactor',
+					q: 'type:text AND body:' + term,
+					fields: 'id,body,target,imageid,selectors',
 					sort: 'random',
 					size: size
 				}
@@ -49,24 +71,9 @@ router.get('/terms/:term', function(req, res, next) {
 
 				if (!r.error) {
 					for (var i = 0; i < r.records.length; i++) {
-						var images = r.records[i].images;
-						var objectID = r.records[i].id;
-						
-						images.forEach(function(i) {
-							if (i.googlevision.responses[0]) {
-								if (i.googlevision.responses[0].textAnnotations) {
-									text = i.googlevision.responses[0].textAnnotations;
-									text.forEach(function(t) {
-										if (t.description.toUpperCase() === term.toUpperCase()) {
-											t.objectid = objectID;
-											t.iiifbaseuri = i.iiifbaseuri;
-											t.scalefactor = i.scalefactor;
-											output.push(t);
-										}
-									});
-								}								
-							}
-						});
+						if (r.records[i].body.toUpperCase() === term.toUpperCase()) {
+							output.push(r.records[i]);
+						}
 					}
 				} else {
 

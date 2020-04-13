@@ -27,8 +27,7 @@
 
 	function processPhrase() {
 		var message = $("#term").val();
-		var terms = message.split(" ");
-
+		var terms = message.trim().split(" ");
 		messages.push(message);
 
 		var m = $("<div/>")
@@ -37,35 +36,44 @@
 		$("#message-panel").append(m);
 
 		for (var i = 0; i < terms.length; i++) {
-			var img = $("<img/>")
-						.attr("class", "draggable message-word")
-						.attr("alt", terms[i])
-						.attr("id", "position-" + i)
-						.dblclick(showFullImage);
-			$(m).append(img);
+			if (term[i] != "") {
+				var img = $("<img/>")
+							.attr("class", "draggable message-word")
+							.attr("alt", terms[i])
+							.attr("id", "position-" + i)
+							.dblclick(showFullImage);
+				$(m).append(img);
 
-			fetchTermImages(terms[i], img);
+				fetchTermImages(terms[i], img);
+			}
 		}	 			
 	}
 
 	function fetchTermImages(term, messageContainer) {
 		$.get("/data/terms/" + term, function (data) {
-			if (data.length > 0) {
-				var randomImage =  data[Math.floor(Math.random()*data.length)];
-				$(messageContainer)
-					.data("info", randomImage)
-					.attr("src",randomImage.iiifTextImageURL);
-			}
+			var randomImage =  data[Math.floor(Math.random()*data.length)];
+			
+			fragmentCoords = randomImage.selectors[0].value.replace("xywh=","");
+			iiifImageFragment = randomImage.target.replace("full/full", fragmentCoords + "/full");
+
+			vertices = fragmentCoords.split(",");
+			randomImage.vertices = {};
+			randomImage.vertices.x = vertices[0];
+			randomImage.vertices.y = vertices[1];
+
+			$(messageContainer)
+				.data("info", randomImage)
+				.attr("src", iiifImageFragment);
 		});
 	}
 
 	function showFullImage() {
 		var pos = $(this).offset();
 		var data = $(this).data("info");
-		var imageURL = data.iiifbaseuri + "/full/full/0/native.jpg";
+		var imageURL = data.target;
 
-		var x = pos.left - (data.boundingPoly.vertices[0].x*data.scalefactor);
-		var y = pos.top - (data.boundingPoly.vertices[0].y*data.scalefactor);
+		var x = pos.left - (data.vertices.x);
+		var y = pos.top - (data.vertices.y);
 
 		var container = $("<div/>")
 							.css({
@@ -84,10 +92,10 @@
 		var infoPanel = $("<div/>")
 					.attr("class", "info-panel");
 		
-		$.get("/data/object/" + data.objectid, function(data) {
-			var description = "It's a " + data.worktypes[0].worktype + " titled " + data.title + ".<br/>";
+		$.get("/data/image/" + data.imageid + "/objects", function(data) {
+			var description = "It's a " + data[0].worktypes[0].worktype + " titled " + data[0].title + ".<br/>";
 			var link = $("<a/>")
-							.attr("href", data.url)
+							.attr("href", data[0].url)
 							.attr("target", "_blank")
 							.html("Read more about it.");
 			

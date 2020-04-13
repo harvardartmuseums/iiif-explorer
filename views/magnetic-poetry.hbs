@@ -24,17 +24,34 @@
 				"safety", "protein", "sun", "safety", "strange", "land", "vodka", "orange", "leaves", "breathless", "sweet", "good", 
 				"food", "welcome", "composition", "cheese", "live", "cottage", "people", "me", "you", "i"];
 
+	interact("#refrigerator")
+		.dropzone({
+			accept: ".magnetic-word",
+			ondrop: function(event) {
+				console.log(event.target.id);
+			}
+		});
+
 	function buildWordList() {
 		var wordContainer = $("#word-list");
 
 		for (var i = wordList.length - 1; i >= 0; i--) {
 			$.get("/data/terms/" + wordList[i] + "?size=1", function(data) {
 				if (data.length > 0) {
+					fragmentCoords = data[0].selectors[0].value.replace("xywh=","");
+					iiifImageFragment = data[0].target.replace("full/full", fragmentCoords + "/full");
+					vertices = fragmentCoords.split(",");
+					data[0].vertices = {};
+					data[0].vertices.x = vertices[0];
+					data[0].vertices.y = vertices[1];
+
+					imageURL = data[0]
 					var word = $("<img/>", {
-									src: data[0].iiifTextImageURL,
-									class: "draggable magnetic-word"
+									src: iiifImageFragment,
+									class: "draggable magnetic-word",
+									id: data[0].id
 									})
-								.attr("alt", data[0].description)
+								.attr("alt", data[0].body)
 								.data("info", data[0])
 								.dblclick(showFullImage);
 
@@ -49,10 +66,10 @@
 	function showFullImage() {
 		var pos = $(this).offset();
 		var data = $(this).data("info");
-		var imageURL = data.iiifbaseuri + "/full/full/0/native.jpg";
+		var imageURL = data.target;
 
-		var x = pos.left - (data.boundingPoly.vertices[0].x*data.scalefactor);
-		var y = pos.top - (data.boundingPoly.vertices[0].y*data.scalefactor);
+		var x = pos.left - (data.vertices.x);
+		var y = pos.top - (data.vertices.y);
 
 		var container = $("<div/>")
 							.css({
@@ -71,10 +88,10 @@
 		var infoPanel = $("<div/>")
 					.attr("class", "info-panel");
 		
-		$.get("/data/object/" + data.objectid, function(data) {
-			var description = "It's a " + data.worktypes[0].worktype + " titled " + data.title + ".<br/>";
+		$.get("/data/image/" + data.imageid + "/objects", function(data) {
+			var description = "It's a " + data[0].worktypes[0].worktype + " titled " + data[0].title + ".<br/>";
 			var link = $("<a/>")
-							.attr("href", data.url)
+							.attr("href", data[0].url)
 							.attr("target", "_blank")
 							.html("Read more about it.");
 			
